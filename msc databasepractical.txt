@@ -1,0 +1,316 @@
+ass1:
+
+use yourDatabaseName; // Replace with your database name
+
+db.createCollection("Employee");
+db.Employee.insertMany([
+    {
+        eno: 1,
+        ename: "Sam",
+        salary: 60000,
+        desig: "Manager",
+        dept: { deptno: 101, deptname: "HR", location: "New York" },
+        project: { pname: "Project A", hrs: 5 }
+    },
+    {
+        eno: 2,
+        ename: "Sophie",
+        salary: 45000,
+        desig: "Developer",
+        dept: { deptno: 102, deptname: "IT", location: "San Francisco" },
+        project: { pname: "Project B", hrs: 4 }
+    },
+    {
+        eno: 3,
+        ename: "Steve",
+        salary: 75000,
+        desig: "Manager",
+        dept: { deptno: 103, deptname: "Sales", location: "Chicago" },
+        project: { pname: "Project C", hrs: 6 }
+    },
+    {
+        eno: 4,
+        ename: "Rachel",
+        salary: 52000,
+        desig: "Developer",
+        dept: { deptno: 102, deptname: "IT", location: "San Francisco" },
+        project: { pname: "Project A", hrs: 5 }
+    },
+    {
+        eno: 5,
+        ename: "James",
+        salary: 30000,
+        desig: "Intern",
+        dept: { deptno: 104, deptname: "Marketing", location: "Los Angeles" },
+        project: { pname: "Project D", hrs: 2 }
+    },
+    {
+        eno: 6,
+        ename: "Sharon",
+        salary: 80000,
+        desig: "Manager",
+        dept: { deptno: 101, deptname: "HR", location: "New York" },
+        project: { pname: "Project E", hrs: 5 }
+    },
+    {
+        eno: 7,
+        ename: "George",
+        salary: 90000,
+        desig: "Developer",
+        dept: { deptno: 103, deptname: "Sales", location: "Chicago" },
+        project: { pname: "Project C", hrs: 6 }
+    },
+    {
+        eno: 8,
+        ename: "Samantha",
+        salary: 62000,
+        desig: "Developer",
+        dept: { deptno: 104, deptname: "Marketing", location: "Los Angeles" },
+        project: { pname: "Project F", hrs: 4 }
+    },
+    {
+        eno: 9,
+        ename: "Tom",
+        salary: 40000,
+        desig: "Tester",
+        dept: { deptno: 102, deptname: "IT", location: "San Francisco" },
+        project: { pname: "Project B", hrs: 3 }
+    },
+    {
+        eno: 10,
+        ename: "Sarah",
+        salary: 70000,
+        desig: "Manager",
+        dept: { deptno: 103, deptname: "Sales", location: "Chicago" },
+        project: { pname: "Project G", hrs: 5 }
+    }
+]);
+
+db.Employee.find().pretty();
+db.Employee.find({ ename: /^S/ }).pretty();
+db.Employee.find({ ename: /^S/ }).pretty();
+db.Employee.find({ desig: "Manager" }).pretty();
+db.Employee.find({ salary: { $gt: 50000, $lt: 80000 } }).pretty();
+db.Employee.updateMany(
+    { "project.pname": "Project A" },
+    { $set: { "project.hrs": 7 } }
+);
+db.Employee.updateMany(
+    { salary: { $gt: 50000, $lt: 150000 } },
+    { $set: { salary: { $add: ["$salary", 5000] } } }
+);
+db.Employee.updateMany(
+    { "dept.deptname": "IT" },
+    { $mul: { salary: 1.2 } }
+);
+db.Employee.deleteMany(
+    { "project.pname": "Project C" }
+);
+-------------------------------
+ass2;
+// Create Authors
+CREATE (a1:Author {name: "J.K. Rowling", city: "London"}),
+       (a2:Author {name: "George R.R. Martin", city: "Bayonne"}),
+       (a3:Author {name: "Agatha Christie", city: "Torquay"});
+
+// Create Publishers
+CREATE (p1:Publisher {name: "Bloomsbury", city: "London"}),
+       (p2:Publisher {name: "Bantam Books", city: "New York"}),
+       (p3:Publisher {name: "HarperCollins", city: "New York"});
+
+// Create Books
+CREATE (b1:Book {title: "Harry Potter and the Philosopher's Stone", genre: "Fantasy"}),
+       (b2:Book {title: "A Game of Thrones", genre: "Fantasy"}),
+       (b3:Book {title: "Murder on the Orient Express", genre: "Mystery"});
+
+// Create Readers
+CREATE (r1:Reader {name: "Mr. Joshi"}),
+       (r2:Reader {name: "Alice"}),
+       (r3:Reader {name: "Bob"});
+
+// Create Relationships
+MATCH (a1:Author {name: "J.K. Rowling"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (a1)-[:WRITTEN]->(b1);
+MATCH (a2:Author {name: "George R.R. Martin"}), (b2:Book {title: "A Game of Thrones"})
+CREATE (a2)-[:WRITTEN]->(b2);
+MATCH (a3:Author {name: "Agatha Christie"}), (b3:Book {title: "Murder on the Orient Express"})
+CREATE (a3)-[:WRITTEN]->(b3);
+MATCH (p1:Publisher {name: "Bloomsbury"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (p1)-[:PUBLISHED]->(b1);
+MATCH (p2:Publisher {name: "Bantam Books"}), (b2:Book {title: "A Game of Thrones"})
+CREATE (p2)-[:PUBLISHED]->(b2);
+MATCH (p3:Publisher {name: "HarperCollins"}), (b3:Book {title: "Murder on the Orient Express"})
+CREATE (p3)-[:PUBLISHED]->(b3);
+MATCH (r1:Reader {name: "Mr. Joshi"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (r1)-[:READ]->(b1);
+MATCH (r2:Reader {name: "Alice"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (r2)-[:READ]->(b1);
+MATCH (r3:Reader {name: "Bob"}), (b2:Book {title: "A Game of Thrones"})
+CREATE (r3)-[:READ]->(b2);
+MATCH (r2:Reader {name: "Alice"}), (b3:Book {title: "Murder on the Orient Express"})
+CREATE (r2)-[:READ]->(b3);
+
+
+MATCH (r:Reader)-[:READ]->(b:Book {title: "Harry Potter and the Philosopher's Stone"})
+RETURN r.name AS PeopleWhoIssuedBook;
+
+MATCH (r:Reader)-[:READ]->(b:Book {title: "A Game of Thrones"})
+RETURN COUNT(r) AS NumberOfPeopleWhoRead;
+
+MATCH (r:Reader {name: "Mr. Joshi"})
+SET r.numberOfBooksIssued = SIZE((r)-[:READ]->(:Book))
+RETURN r.name, r.numberOfBooksIssued;
+
+MATCH (p:Publisher {city: "Pune"})
+RETURN p.name AS PublishersInPune;
+
+MATCH (r:Reader)-[:RECOMMENDED]->(b:Book)
+WHERE b.title IN ["Harry Potter and the Philosopher's Stone", "A Game of Thrones"]
+RETURN DISTINCT r.name AS ReadersRecommendingBooks;
+
+MATCH (r:Reader)
+WHERE NOT (r)-[:RECOMMENDED]->(:Book)
+RETURN r.name AS ReadersWithoutRecommendations;
+
+MATCH (a:Author)-[:WRITTEN]->(b:Book)<-[:READ]-(r:Reader)
+RETURN a.name AS Author, COUNT(DISTINCT r) AS ReaderCount
+ORDER BY ReaderCount DESC
+LIMIT 1;
+
+MATCH (r:Reader {name: "Alice"})-[:RECOMMENDED]->(b:Book)<-[:READ]-(r2:Reader)
+RETURN DISTINCT b.title AS BooksRecommendedAndRead;
+
+MATCH (r:Reader {name: "Alice"})-[:RECOMMENDED]->(b:Book)<-[:READ]-(r2:Reader)
+RETURN b.title AS Book, COUNT(DISTINCT r2) AS ReaderCount
+ORDER BY ReaderCount DESC
+LIMIT 1;
+
+// Create Artists
+CREATE (a1:Artist {name: "Adele"}),
+       (a2:Artist {name: "Ed Sheeran"}),
+       (a3:Artist {name: "Taylor Swift"});
+
+// Create Songs
+CREATE (s1:Song {title: "Rolling in the Deep", genre: "Pop"}),
+       (s2:Song {title: "Shape of You", genre: "Pop"}),
+       (s3:Song {title: "Love Story", genre: "Country"});
+
+// Create Record Companies
+CREATE (rc1:RecordCompany {name: "XL Recordings"}),
+       (rc2:RecordCompany {name: "Atlantic Records"}),
+       (rc3:RecordCompany {name: "Big Machine Label Group"});
+
+// Create Studios
+CREATE (st1:Studio {name: "Abbey Road Studios"}),
+       (st2:Studio {name: "Electric Lady Studios"});
+
+// Create Relationships
+MATCH (a1:Artist {name: "Adele"}), (s1:Song {title: "Rolling in the Deep"})
+CREATE (a1)-[:SANG]->(s1);
+MATCH (a2:Artist {name: "Ed Sheeran"}), (s2:Song {title: "Shape of You"})
+CREATE (a2)-[:SANG]->(s2);
+MATCH (a3:Artist {name: "Taylor Swift"}), (s3:Song {title: "Love Story"})
+CREATE (a3)-[:SANG]->(s3);
+MATCH (rc1:RecordCompany {name: "XL Recordings"}), (s1:Song {title: "Rolling in the Deep"})
+CREATE (rc1)-[:FINANCED]->(s1);
+MATCH (rc2:RecordCompany {name: "Atlantic Records"}), (s2:Song {title: "Shape of You"})
+CREATE (rc2)-[:FINANCED]->(s2);
+MATCH (rc3:RecordCompany {name: "Big Machine Label Group"}), (s3:Song {title: "Love Story"})
+CREATE (rc3)-[:FINANCED]->(s3);
+MATCH (s1:Song {title: "Rolling in the Deep"}), (st1:Studio {name: "Abbey Road Studios"})
+CREATE (s1)-[:RECORDED_BY]->(st1);
+MATCH (s2:Song {title: "Shape of You"}), (st2:Studio {name: "Electric Lady Studios"})
+CREATE (s2)-[:RECORDED_BY]->(st2);
+MATCH (s3:Song {title: "Love Story"}), (st1:Studio {name: "Abbey Road Studios"})
+CREATE (s3)-[:RECORDED_BY]->(st1);
+
+MATCH (a:Artist {name: "Adele"})-[:SANG]->(s:Song)
+RETURN s.title AS SongsByArtist;
+
+MATCH (rc:RecordCompany)-[:FINANCED]->(s:Song {title: "Shape of You"})
+RETURN rc.name AS RecordCompaniesFinancingSong;
+
+MATCH (a:Artist)-[:SANG]->(s:Song {title: "Love Story"})
+RETURN a.name AS ArtistsPerformingSong;
+
+MATCH (s:Song)-[:RECORDED_BY]->(st:Studio {name: "Abbey Road Studios"})
+RETURN s.title AS SongsRecordedByStudio;
+
+
+// Create Authors
+CREATE (a1:Author {name: "J.K. Rowling", city: "London"}),
+       (a2:Author {name: "George R.R. Martin", city: "Bayonne"}),
+       (a3:Author {name: "Agatha Christie", city: "Torquay"});
+
+// Create Publishers
+CREATE (p1:Publisher {name: "Bloomsbury", city: "London"}),
+       (p2:Publisher {name: "Bantam Books", city: "New York"}),
+       (p3:Publisher {name: "HarperCollins", city: "New York"});
+
+// Create Books
+CREATE (b1:Book {title: "Harry Potter and the Philosopher's Stone", genre: "Fantasy"}),
+       (b2:Book {title: "A Game of Thrones", genre: "Fantasy"}),
+       (b3:Book {title: "Murder on the Orient Express", genre: "Mystery"});
+
+// Create Readers
+CREATE (r1:Reader {name: "Mr. Joshi"}),
+       (r2:Reader {name: "Alice"}),
+       (r3:Reader {name: "Bob"}),
+       (r4:Reader {name: "Charlie"});
+
+// Create Relationships
+MATCH (a1:Author {name: "J.K. Rowling"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (a1)-[:WRITTEN]->(b1);
+MATCH (a2:Author {name: "George R.R. Martin"}), (b2:Book {title: "A Game of Thrones"})
+CREATE (a2)-[:WRITTEN]->(b2);
+MATCH (a3:Author {name: "Agatha Christie"}), (b3:Book {title: "Murder on the Orient Express"})
+CREATE (a3)-[:WRITTEN]->(b3);
+MATCH (p1:Publisher {name: "Bloomsbury"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (p1)-[:PUBLISHED]->(b1);
+MATCH (p2:Publisher {name: "Bantam Books"}), (b2:Book {title: "A Game of Thrones"})
+CREATE (p2)-[:PUBLISHED]->(b2);
+MATCH (p3:Publisher {name: "HarperCollins"}), (b3:Book {title: "Murder on the Orient Express"})
+CREATE (p3)-[:PUBLISHED]->(b3);
+
+// Reader Recommendations
+MATCH (r1:Reader {name: "Mr. Joshi"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (r1)-[:RECOMMENDED]->(b1);
+MATCH (r2:Reader {name: "Alice"}), (b1:Book {title: "Harry Potter and the Philosopher's Stone"})
+CREATE (r2)-[:RECOMMENDED]->(b1);
+MATCH (r3:Reader {name: "Bob"}), (b2:Book {title: "A Game of Thrones"})
+CREATE (r3)-[:RECOMMENDED]->(b2);
+MATCH (r4:Reader {name: "Charlie"}), (b3:Book {title: "Murder on the Orient Express"})
+CREATE (r4)-[:RECOMMENDED]->(b3);
+
+MATCH (r:Reader)-[:RECOMMENDED]->(b:Book)
+WHERE b.title IN ["Harry Potter and the Philosopher's Stone", "A Game of Thrones"]
+RETURN DISTINCT r.name AS ReadersRecommendingBooks;
+
+MATCH (r:Reader)
+WHERE NOT (r)-[:RECOMMENDED]->(:Book)
+RETURN r.name AS ReadersWithoutRecommendations;
+
+
+MATCH (a:Author)-[:WRITTEN]->(b:Book)<-[:READ]-(r:Reader)
+RETURN a.name AS Author, COUNT(DISTINCT r) AS ReaderCount
+ORDER BY ReaderCount DESC
+LIMIT 1;
+
+MATCH (r:Reader {name: "Mr. Joshi"})-[:RECOMMENDED]->(b:Book)<-[:READ]-(r2:Reader)
+RETURN DISTINCT b.title AS BooksRecommendedAndRead;
+
+MATCH (r:Reader {name: "Mr. Joshi"})-[:RECOMMENDED]->(b:Book)<-[:READ]-(r2:Reader)
+RETURN b.title AS Book, COUNT(DISTINCT r2) AS ReaderCount
+ORDER BY ReaderCount DESC
+LIMIT 1;
+
+MATCH (p:Publisher)
+WHERE NOT (p)-[:PUBLISHED]->(:Book)<-[:WRITTEN]-(a:Author)
+  OR (a.city IN ["Pune", "Mumbai"])
+RETURN p.name AS PublishersWithoutBooksFromAuthorsInPuneAndMumbai;
+
+MATCH (r:Reader)
+WHERE SIZE((r)-[:READ]->(:Book)) > 5  // Adjust the threshold as needed
+RETURN r.name AS VoraciousReaders;
+
+
